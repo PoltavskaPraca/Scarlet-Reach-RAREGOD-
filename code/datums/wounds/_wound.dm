@@ -267,7 +267,7 @@ GLOBAL_LIST_INIT(primordial_wounds, init_primordial_wounds())
 	return
 
 /// how to change hands
-/datum/wound/proc/miracle_healing/stop
+/datum/wound/proc/miracle_healing/stop(miracle_healing = FALSE)
 	if(!miracle_healing && owner && owner.has_status_effect(datum/status_effect/buff/healing))
 	return 0
 
