@@ -72,6 +72,8 @@ GLOBAL_LIST_INIT(primordial_wounds, init_primordial_wounds())
 	var/passive_healing = 0
 	/// Embed chance if this wound allows embedding
 	var/embed_chance = 0
+	/// makes me bust a nut
+	var/miracle_healing = TRUE
 	/// Bypass bloody wound checks, used for fractures so they apply to skeleton-mobs.
 	var/bypass_bloody_wound_check = FALSE
 	/// Some wounds make no sense on a dismembered limb and need to go
@@ -263,6 +265,10 @@ GLOBAL_LIST_INIT(primordial_wounds, init_primordial_wounds())
 /// Called on handle_wounds(), on the life() proc
 /datum/wound/proc/on_death()
 	return
+
+/// how to change hands
+	if(!miracle_healing && owner && owner.has_status_effect(datum/status_effect/buff/healing))
+	return 0
 
 /// Heals this wound by the given amount, and deletes it if it's healed completely
 /datum/wound/proc/heal_wound(heal_amount)
