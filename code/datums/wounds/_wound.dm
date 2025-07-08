@@ -69,6 +69,8 @@ GLOBAL_LIST_INIT(primordial_wounds, init_primordial_wounds())
 	var/sleep_healing = 1
 	/// Amount we heal passively, always
 	var/passive_healing = 0
+	/// Whether or not this wound can be healed by a miracle - set to FALSE to make a wound immune to miracle healing
+	var/miracle_healing = TRUE
 	/// Embed chance if this wound allows embedding
 	var/embed_chance = 0
 
@@ -266,6 +268,11 @@ GLOBAL_LIST_INIT(primordial_wounds, init_primordial_wounds())
 	// Wound cannot be healed normally, whp is null
 	if(isnull(whp))
 		return 0
+
+	// If miracle_healing = FALSE for this wound type and owner has miracle healing active, blocks healing
+    if(!miracle_healing && owner && owner.has_status_effect(/datum/status_effect/buff/healing))
+        return 0
+
 	var/amount_healed = min(whp, round(heal_amount, DAMAGE_PRECISION))
 	whp -= amount_healed
 	if(whp <= 0)
