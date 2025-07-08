@@ -270,8 +270,8 @@ GLOBAL_LIST_INIT(primordial_wounds, init_primordial_wounds())
 		return 0
 
 // If miracle_healing = FALSE for this wound type and owner has miracle healing active, blocks healing
-if(!miracle_healing && owner && owner.has_status_effect(/datum/status_effect/buff/healing))
-	return 0
+	if(!miracle_healing && owner && owner.has_status_effect(/datum/status_effect/buff/healing))
+		return 0
 
 	var/amount_healed = min(whp, round(heal_amount, DAMAGE_PRECISION))
 	whp -= amount_healed
