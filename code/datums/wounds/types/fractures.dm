@@ -47,6 +47,7 @@
 		return FALSE
 	sleep_healing = max(sleep_healing, 1)
 	passive_healing = max(passive_healing, 1)
+	miracle_healing = TRUE // enables healing of fractures with a miracle after the bone is set
 	return TRUE
 
 /datum/wound/fracture/head

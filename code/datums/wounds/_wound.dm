@@ -269,7 +269,7 @@ GLOBAL_LIST_INIT(primordial_wounds, init_primordial_wounds())
 	if(isnull(whp))
 		return 0
 
-// If miracle_healing = FALSE for this wound type and owner has miracle healing active, blocks healing
+// If miracle_healing is disabled for this wound type and owner has miracle healing active, blocks healing
 	if(!miracle_healing && owner && owner.has_status_effect(/datum/status_effect/buff/healing))
 		return 0
 
