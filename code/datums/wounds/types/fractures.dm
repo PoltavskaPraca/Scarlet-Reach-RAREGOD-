@@ -18,6 +18,7 @@
 	critical = TRUE
 	sleep_healing = 0 // no sleep healing that is silly
 	miracle_healing = FALSE // makes fractures be unhealable by miracle
+
 	werewolf_infection_probability = 0
 	/// Whether or not we can be surgically set
 	var/can_set = TRUE
@@ -53,6 +54,7 @@
 	sleep_healing = max(sleep_healing, 1)
 	passive_healing = max(passive_healing, 1)
 	heal_wound(initial(whp)/1.6) //heal a little more than of maximum fracture
+	miracle_healing = TRUE // enables healing of fractures with a miracle after the bone is set
 	can_set = FALSE
 	return TRUE
 

@@ -72,7 +72,7 @@ GLOBAL_LIST_INIT(primordial_wounds, init_primordial_wounds())
 	var/passive_healing = 0
 	/// Embed chance if this wound allows embedding
 	var/embed_chance = 0
-	/// makes me bust a nut
+	/// Whether or not this wound can be healed by a miracle - set to FALSE to make a wound immune to miracle healing
 	var/miracle_healing = TRUE
 	/// Bypass bloody wound checks, used for fractures so they apply to skeleton-mobs.
 	var/bypass_bloody_wound_check = FALSE
@@ -266,15 +266,16 @@ GLOBAL_LIST_INIT(primordial_wounds, init_primordial_wounds())
 /datum/wound/proc/on_death()
 	return
 
-/// how to change hands
-	if(!miracle_healing && owner && owner.has_status_effect(/datum/status_effect/buff/healing))
-		return 0
-
 /// Heals this wound by the given amount, and deletes it if it's healed completely
 /datum/wound/proc/heal_wound(heal_amount)
 	// Wound cannot be healed normally, whp is null
 	if(isnull(whp))
 		return 0
+
+/// If miracle_healing is disabled for this wound type and owner has miracle healing active, blocks healing
+	if(!miracle_healing && owner && owner.has_status_effect(/datum/status_effect/buff/healing))
+		return 0
+
 	var/amount_healed = min(whp, round(heal_amount, DAMAGE_PRECISION))
 	whp -= amount_healed
 	if(whp <= 0)
