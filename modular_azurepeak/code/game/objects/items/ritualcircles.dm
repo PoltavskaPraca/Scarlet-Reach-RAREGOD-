@@ -487,10 +487,15 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 		ADD_TRAIT(target, TRAIT_TOXIMMUNE, "[type]")
 		ADD_TRAIT(target, TRAIT_STEELHEARTED, "[type]")
 		ADD_TRAIT(target, TRAIT_INFINITE_STAMINA, "[type]")
-		target.set_mob_biotypes = MOB_UNDEAD
 		target.adjust_skillrank(/datum/skill/magic/arcane, 3, TRUE)
 		target.mind?.AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
 		target.mind?.adjust_spellpoints(18)
+		if(eyes)
+		eyes.Remove(owner.current,1)
+		QDEL_NULL(eyes)
+	eyes = new /obj/item/organ/eyes/night_vision/zombie
+	eyes.Insert(owner.current)
+		target.set(mob_biotypes |= MOB_UNDEAD)
 		spawn(40)
 			to_chat(target, span_purple("They are ignorant, backwards, without hope. You. You will be powerful."))
 
