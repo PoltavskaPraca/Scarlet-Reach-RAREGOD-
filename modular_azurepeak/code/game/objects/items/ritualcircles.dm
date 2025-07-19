@@ -487,7 +487,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 		ADD_TRAIT(target, TRAIT_TOXIMMUNE, "[type]")
 		ADD_TRAIT(target, TRAIT_STEELHEARTED, "[type]")
 		ADD_TRAIT(target, TRAIT_INFINITE_STAMINA, "[type]")
-		mob_biotypes = MOB_UNDEAD
+		target.set_mob_biotypes = MOB_UNDEAD
 		target.adjust_skillrank(/datum/skill/magic/arcane, 3, TRUE)
 		target.mind?.AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
 		target.mind?.adjust_spellpoints(18)
