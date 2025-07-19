@@ -495,7 +495,6 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 		QDEL_NULL(eyes)
 	eyes = new /obj/item/organ/eyes/night_vision/zombie
 	eyes.Insert(target.current)
-		mob_biotypes |= MOB_UNDEAD
 		spawn(40)
 			to_chat(target, span_purple("They are ignorant, backwards, without hope. You. You will be powerful."))
 
