@@ -493,8 +493,8 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 		if(eyes)
 		eyes.Remove(target.current,1)
 		QDEL_NULL(eyes)
-	eyes = new /obj/item/organ/eyes/night_vision/zombie
-	eyes.Insert(target.current)
+		eyes = new /obj/item/organ/eyes/night_vision/zombie
+		eyes.Insert(target.current)
 		spawn(40)
 			to_chat(target, span_purple("They are ignorant, backwards, without hope. You. You will be powerful."))
 
