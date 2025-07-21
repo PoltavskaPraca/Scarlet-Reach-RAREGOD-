@@ -374,6 +374,7 @@
 	name = "decrepit zcross"
 	desc = "A symbol of progress from an era that had reason to believe in it."
 	icon_state = "zcross_a"
+	slot_flags = ITEM_SLOT_NECK|ITEM_SLOT_HIP|ITEM_SLOT_WRISTS|ITEM_SLOT_RING
 
 /obj/item/clothing/neck/roguetown/psicross/astrata
 	name = "amulet of Astrata"

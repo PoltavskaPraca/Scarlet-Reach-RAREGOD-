@@ -135,3 +135,5 @@
 
 	/// Whether our FOV cone is overridden to be hidden. Simple bool.
 	var/viewcone_override
+
+	var/ritual_skeletonization = FALSE // ritualcircles.dm path of rituos, prevents the ritual target's name always being unknown ingame. used in human_helpers.dm if( !O || (HAS_TRAIT(src, TRAIT_DISFIGURED)) || !real_name || (O.skeletonized && !ritual_skeletonization && !mind?.has_antag_datum(/datum/antagonist/lich)))

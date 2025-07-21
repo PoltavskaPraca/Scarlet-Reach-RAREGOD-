@@ -480,6 +480,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	spawn(20)
 		playsound(loc, 'sound/combat/dismemberment/dismem (6).ogg', 50)
 		playsound(target, 'sound/health/slowbeat.ogg', 50)
+		target.mind?.RemoveSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation) // gotta remove presiistitititginanon if you had one to avoid getting double
 		ADD_TRAIT(target, TRAIT_NOHUNGER, "[type]")
 		ADD_TRAIT(target, TRAIT_NOBREATH, "[type]")
 		ADD_TRAIT(target, TRAIT_ARCYNE_T3, "[type]")
@@ -487,16 +488,22 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 		ADD_TRAIT(target, TRAIT_TOXIMMUNE, "[type]")
 		ADD_TRAIT(target, TRAIT_STEELHEARTED, "[type]")
 		ADD_TRAIT(target, TRAIT_INFINITE_STAMINA, "[type]")
-		target.adjust_skillrank(/datum/skill/magic/arcane, 3, TRUE)
-		target.mind?.AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
+		target.adjust_skillrank(/datum/skill/magic/arcane, 3, TRUE) // mages get better spellcasting skill, still no access to the greater fireball sloppp, should they??
+		target.mind?.AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation) // gotta remove if you already have it fuck?
 		target.mind?.adjust_spellpoints(18)
-		if(eyes)
-		eyes.Remove(target.current,1)
-		QDEL_NULL(eyes)
-		eyes = new /obj/item/organ/eyes/night_vision/zombie
-		eyes.Insert(target.current)
+		target.mob_biotypes |= MOB_UNDEAD
 		spawn(40)
 			to_chat(target, span_purple("They are ignorant, backwards, without hope. You. You will be powerful."))
+		var/list/body_parts = target.bodyparts.Copy()
+		for(var/obj/item/bodypart/part in body_parts)
+			part.skeletonize(FALSE)
+		target.update_body_parts()
+		var/list/eyes_replaced = target.internal_organs.Copy()
+		var/obj/item/organ/eyes/eyes = target.getorganslot(eyes_replaced) // #define ORGAN_SLOT_PENIS "penis" ORGAN_SLOT_TESTICLES "testicles" ORGAN_SLOT_BREASTS "breasts" ORGAN_SLOT_VAGINA "vagina" do I wanna bother
+		eyes = new /obj/item/organ/eyes/night_vision/zombie
+		eyes.Insert(target)
+		target.update_body_parts()
+		target.ritual_skeletonization = TRUE
 
 /datum/outfit/job/roguetown/darksteelrite/pre_equip(mob/living/carbon/human/H)
 	..()
