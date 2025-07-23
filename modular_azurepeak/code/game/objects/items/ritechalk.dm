@@ -18,7 +18,9 @@
 		if(/datum/patron/inhumen/zizo)
 			ritechoices+="Rune of ZIZO" 
 		if(/datum/patron/inhumen/matthios)
-			ritechoices+="Rune of Transaction" 
+			ritechoices+="Rune of Transaction"
+		if(/datum/patron/inhumen/baotha) 
+			ritechoices+="Rune of Desire"
 		if(/datum/patron/divine/astrata)
 			ritechoices+="Rune of Sun"
 		if(/datum/patron/divine/noc)
@@ -108,3 +110,8 @@
 			if(do_after(user, 30, src))
 				playsound(src, 'sound/foley/scribble.ogg', 40, TRUE)
 				new /obj/structure/ritualcircle/graggar(step_turf)
+		if("Rune of Desire")
+			to_chat(user,span_cultsmall("I begin inscribing the rune of Desire"))
+			if(do_after(user, 30, src))
+				playsound(src, 'sound/foley/scribble.ogg', 40, TRUE)
+				new /obj/structure/ritualcircle/baotha(step_turf)

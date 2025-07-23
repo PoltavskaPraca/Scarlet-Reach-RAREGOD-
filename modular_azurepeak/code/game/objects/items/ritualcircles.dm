@@ -499,13 +499,14 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 			spawn(20)
 				playsound(target, 'sound/health/slowbeat.ogg', 60)
 				playsound(loc, 'sound/ambience/creepywind.ogg', 80)
-				target.set_patron(new /datum/patron/inhumen/zizo)
+				target.set_patron(new /datum/patron/inhumen/zizo) //lowkey wanna give convertees like 4-8 learning points for spells in addition to that, +2 arcyne skill levels
 				target.adjust_skillrank(/datum/skill/misc/reading, 2, TRUE)
 				target.adjust_skillrank(/datum/skill/craft/alchemy, 1, TRUE)
 				target.adjust_skillrank(/datum/skill/misc/medicine, 1, TRUE)
 				target.change_stat("intelligence", 2)
 				target.change_stat("perception", 1)
 				spawn(40)
+					playsound(loc, 'sound/misc/boatleave.ogg', 100)
 					to_chat(target, span_purple("They are ignorant, backwards, without hope. You. You will will fight in the name of Progress."))
 		if("DEATH")
 			to_chat(target, span_warning("Images of Her Work most grandoise flood your mind yet... you choose to reject them. Only final death awaits now, you foolish thing."))
@@ -637,6 +638,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 				target.change_stat("endurance", 1)
 				spawn(40)
 					to_chat(target, span_cult("More to the maw, for [target] shall feed their own greed along with us!"))
+					playsound(loc, 'sound/items/matidol2.ogg', 50)
 		if("DEATH")
 			to_chat(target, span_warning("All that does glimmer could be yours... if only you would submit to your own greedy nature. Only final death awaits now, you, fellow most austere."))
 			target.Stun(60)
@@ -774,7 +776,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 			to_chat(target, span_userdanger("UNIMAGINABLE PAIN!"))
 			target.emote("Warcry")
 			playsound(loc, 'sound/combat/newstuck.ogg', 50)
-			loc.visible_message(span_cult("[target]'s imagines a lot of fragging, holy, they are gonna frag")) // i cant
+			loc.visible_message(span_cult("[target]'s imagines a lot of fragging, holy, they are gonna frag.")) // i cant
 			spawn(20)
 				playsound(loc, 'sound/combat/hits/onmetal/grille (2).ogg', 50)
 				playsound(target, 'sound/misc/heroin_rush.ogg', 100)
@@ -787,11 +789,101 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 				target.change_stat("endurance", 1)
 				spawn(40)
 					to_chat(target, span_cult("Break them."))
+					target.say("SLAUGHTER!!") // many enemies bring much honour
 		if("DEATH")
-			to_chat(target, span_warning("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!."))
+			to_chat(target, span_warning("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHH!!"))
 			target.Stun(60)
 			target.Knockdown(60)
 			to_chat(target, span_userdanger("UNIMAGINABLE PAIN!"))
 			target.emote("Agony")
 			target.apply_damage(150, BRUTE, HEAD)
 			loc.visible_message(span_cult("[target] is violently thrashing atop the rune, writhing, as they dare to defy GRAGGAR."))
+
+
+
+
+/obj/structure/ritualcircle/baotha
+	name = "Rune of Desire"
+	desc = "A Holy Rune of BAOTHA"
+	icon_state = "baotha_chalky"
+	var/baotharites = list("Conversion")
+
+/obj/structure/ritualcircle/baotha/attack_hand(mob/living/user)
+	if((user.patron?.type) != /datum/patron/inhumen/baotha)
+		to_chat(user,span_smallred("I don't know the proper rites for this..."))
+		return
+	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
+		to_chat(user,span_smallred("I don't know the proper rites for this..."))
+		return
+	if(user.has_status_effect(/datum/status_effect/debuff/ritesexpended))
+		to_chat(user,span_smallred("I have performed enough rituals for the day... I must rest before communing more."))
+		return
+	var/riteselection = input(user, "Rituals of Desire", src) as null|anything in baotharites
+	switch(riteselection) // put ur rite selection here
+		if("Conversion")
+			var/onrune = view(1, loc)
+			var/list/folksonrune = list()
+			for(var/mob/living/carbon/human/persononrune in onrune)
+				if(!HAS_TRAIT(persononrune, TRAIT_DEPRAVED))
+					folksonrune += persononrune
+			var/target = input(user, "Choose a host") as null|anything in folksonrune
+			if(!target)
+				return
+			if(do_after(user, 50))
+				user.say("#O, the fallen one...")
+				if(do_after(user, 50))
+					user.say("#O, the rejected one... heed my call...")
+					if(do_after(user, 50))
+						user.say("#Let them know your embrace, for they long for it...") // can someone else write this instead of me
+						if(do_after(user, 50))
+							icon_state = "baotha_active"
+							baothaconversion(target) // removed CD bc it's gonna be coal to sit there and wait for it to go off rite cooldown, this one is purely social in its nature
+							spawn(120)
+								icon_state = "baotha_chalky"
+
+/obj/structure/ritualcircle/baotha/proc/baothaconversion(src)
+	var/onrune = view(0, loc)
+	var/list/possible_targets = list()
+	for(var/mob/living/carbon/human/persononrune in onrune)
+		possible_targets += persononrune
+	var/mob/living/carbon/human/target
+	if(possible_targets.len)
+		target = pick(possible_targets)
+	else
+		to_chat(usr, "No valid targets are standing on the rune! You must stand directly on the rune to receive Baotha's blessing.")
+		return
+	if(HAS_TRAIT(target, TRAIT_DEPRAVED))
+		loc.visible_message(span_cult("THE RITE REJECTS ONE ALREADY DEPRAVED ENOUGH!!"))
+		return
+	var/yesorno = list("LEASH", "LASH")
+	var/dialoguechoice = input(target, "LEASH OR LASH", src) as null|anything in yesorno
+	switch(dialoguechoice) // fuuck
+		if("LEASH")
+			to_chat(target, span_warning("Images of Her Work most grandoise flood your mind, as the heretical knowledge is seared right into your very body and soul."))
+			target.Stun(60)
+			target.Knockdown(60)
+			to_chat(target, span_userdanger("PLEASURE FOR PLEASURE'S SAKE!"))
+			target.emote("Chuckle")
+			playsound(loc, 'sound/combat/newstuck.ogg', 50)
+			loc.visible_message(span_cult("Blank.")) // warhammer 3 slaaneshi daemonette quotes
+			spawn(20)
+				playsound(target, 'sound/health/fastbeat.ogg', 60)
+				playsound(loc, 'sound/ambience/creepywind.ogg', 80)
+				target.set_patron(new /datum/patron/inhumen/baotha)
+				target.adjust_skillrank(/datum/skill/misc/athletics, 1, TRUE)
+				target.adjust_skillrank(/datum/skill/misc/music, 1, TRUE)
+				target.adjust_skillrank(/datum/skill/misc/riding, 1, TRUE) // haha get it?
+				target.change_stat("endurance", 1)
+				target.change_stat("speed", 2)
+				spawn(40)
+					to_chat(target, span_purple("Backshots, divine.")) // help
+					playsound(target, 'sound/music/combat_starsugar.ogg', 50)
+					//target.add_reagent(new /obj/item/reagent_containers/powder/moondust_purest, 5) // HOW THE FUCK DO YOU DO THIS
+		if("LASH")
+			to_chat(target, span_warning("Images of Her Work most grandoise flood your mind yet... you choose to reject them. Only final death awaits now, you foolish thing.")) // gotta change it too
+			target.Stun(60)
+			target.Knockdown(60)
+			to_chat(target, span_userdanger("UNIMAGINABLE PAIN!"))
+			target.emote("Agony")
+			target.apply_damage(100, BRUTE, HEAD)
+			loc.visible_message(span_cult("[target] is violently thrashing atop the rune, writhing, as they dare to defy Baotha."))
