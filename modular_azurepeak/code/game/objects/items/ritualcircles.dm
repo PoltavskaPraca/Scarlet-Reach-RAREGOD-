@@ -877,8 +877,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 				target.change_stat("speed", 2)
 				spawn(40)
 					to_chat(target, span_purple("Backshots, divine.")) // help
-					playsound(target, 'sound/music/combat_starsugar.ogg', 50)
-					//target.add_reagent(new /obj/item/reagent_containers/powder/moondust_purest, 5) // HOW THE FUCK DO YOU DO THIS
+					target.apply_status_effect(new /datum/status_effect/buff/moondust_purest, 15) // HOW THE FUCK DO YOU DO THIS
 		if("LASH")
 			to_chat(target, span_warning("Images of Her Work most grandoise flood your mind yet... you choose to reject them. Only final death awaits now, you foolish thing.")) // gotta change it too
 			target.Stun(60)
