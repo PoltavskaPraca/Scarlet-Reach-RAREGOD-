@@ -374,7 +374,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	name = "Rune of Progress"
 	desc = "A Holy Rune of ZIZO"
 	icon_state = "zizo_chalky"
-	var/zizorites = list("Rite of Armaments")
+	var/zizorites = list("Rite of Armaments", "Conversion")
 
 /obj/structure/ritualcircle/zizo/attack_hand(mob/living/user)
 	if((user.patron?.type) != /datum/patron/inhumen/zizo)
@@ -407,6 +407,26 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 							icon_state = "zizo_active"
 							user.apply_status_effect(/datum/status_effect/debuff/ritesexpended)
 							zizoarmaments(target)
+							spawn(120)
+								icon_state = "zizo_chalky"
+		if("Conversion")
+			var/onrune = view(1, loc)
+			var/list/folksonrune = list()
+			for(var/mob/living/carbon/human/persononrune in onrune)
+				if(!HAS_TRAIT(persononrune, TRAIT_CABAL))
+					folksonrune += persononrune
+			var/target = input(user, "Choose a host") as null|anything in folksonrune
+			if(!target)
+				return
+			if(do_after(user, 50))
+				user.say("ZIZO! ZIZO! DAME OF PROGRESS!!")
+				if(do_after(user, 50))
+					user.say("ZIZO! ZIZO! HEED MY CALL!!")
+					if(do_after(user, 50))
+						user.say("ZIZO! ZIZO!  MAKE THEM LEARN AND KNOW!!")
+						if(do_after(user, 50))
+							icon_state = "zizo_active"
+							zizoconversion(target) // removed CD bc it's gonna be coal to sit there and wait for it to go off rite cooldown, this one is purely social in its nature
 							spawn(120)
 								icon_state = "zizo_chalky"
 
@@ -451,6 +471,50 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	backr = /obj/item/rogueweapon/sword/long/zizo
 	neck = /obj/item/clothing/neck/roguetown/bevor
 
+/obj/structure/ritualcircle/zizo/proc/zizoconversion(src)
+	var/onrune = view(0, loc)
+	var/list/possible_targets = list()
+	for(var/mob/living/carbon/human/persononrune in onrune)
+		possible_targets += persononrune
+	var/mob/living/carbon/human/target
+	if(possible_targets.len)
+		target = pick(possible_targets)
+	else
+		to_chat(usr, "No valid targets are standing on the rune! You must stand directly on the rune to receive Zizo's blessing.")
+		return
+	if(HAS_TRAIT(target, TRAIT_CABAL))
+		loc.visible_message(span_cult("THE RITE REJECTS ONE ALREADY OF THE CABAL"))
+		return
+	var/yesorno = list("SUBMISSION", "DEATH")
+	var/dialoguechoice = input(target, "SUBMISSION OR DEATH", src) as null|anything in yesorno
+	switch(dialoguechoice) // fuuck
+		if("SUBMISSION")
+			to_chat(target, span_warning("Images of Her Work most grandoise flood your mind, as the heretical knowledge is seared right into your very body and soul."))
+			target.Stun(60)
+			target.Knockdown(60)
+			to_chat(target, span_userdanger("UNIMAGINABLE PAIN!"))
+			target.emote("Agony")
+			playsound(loc, 'sound/combat/newstuck.ogg', 50)
+			loc.visible_message(span_cult("Great hooks come from the rune, embedding into [target]'s ankles, pulling them onto the rune. Then, into their wrists. [target] is convulsing on the ground, as they finally accept the truth. "))
+			spawn(20)
+				playsound(target, 'sound/health/slowbeat.ogg', 60)
+				playsound(loc, 'sound/ambience/creepywind.ogg', 80)
+				target.set_patron(new /datum/patron/inhumen/zizo)
+				target.adjust_skillrank(/datum/skill/misc/reading, 2, TRUE)
+				target.adjust_skillrank(/datum/skill/craft/alchemy, 1, TRUE)
+				target.adjust_skillrank(/datum/skill/misc/medicine, 1, TRUE)
+				target.change_stat("intelligence", 2)
+				target.change_stat("perception", 1)
+				spawn(40)
+					to_chat(target, span_purple("They are ignorant, backwards, without hope. You. You will will fight in the name of Progress."))
+		if("DEATH")
+			to_chat(target, span_warning("Images of Her Work most grandoise flood your mind yet... you choose to reject them. Only final death awaits now, you foolish thing."))
+			target.Stun(60)
+			target.Knockdown(60)
+			to_chat(target, span_userdanger("UNIMAGINABLE PAIN!"))
+			target.emote("Agony")
+			target.apply_damage(100, BRUTE, HEAD)
+			loc.visible_message(span_cult("[target] is violently thrashing on top of the rune, writhing, as they dare to defy ZIZO."))
 
 
 
@@ -458,7 +522,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	name = "Rune of Transaction"
 	desc = "A Holy Rune of Matthios."
 	icon_state = "matthios_chalky"
-	var/matthiosrites = list("Rite of Armaments")
+	var/matthiosrites = list("Rite of Armaments", "Conversion")
 
 
 /obj/structure/ritualcircle/matthios/attack_hand(mob/living/user)
@@ -492,6 +556,26 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 							icon_state = "matthios_active"
 							user.apply_status_effect(/datum/status_effect/debuff/ritesexpended)
 							matthiosarmaments(target)
+							spawn(120)
+								icon_state = "matthios_chalky"
+		if("Conversion")
+			var/onrune = view(1, loc)
+			var/list/folksonrune = list()
+			for(var/mob/living/carbon/human/persononrune in onrune)
+				if(!HAS_TRAIT(persononrune, TRAIT_COMMIE))
+					folksonrune += persononrune
+			var/target = input(user, "Choose a host") as null|anything in folksonrune
+			if(!target)
+				return
+			if(do_after(user, 50))
+				user.say("Gold and Silver, he feeds!!")
+				if(do_after(user, 50))
+					user.say("Pieces Tens, Hundreds, Thousands. The transactor feeds 'pon them all!!")
+					if(do_after(user, 50))
+						user.say("Take what is offered, for a deal is struck!!")
+						if(do_after(user, 50))
+							icon_state = "matthios_active"
+							matthiosconversion(target) // again no CD since it's a social thing babajing
 							spawn(120)
 								icon_state = "matthios_chalky"
 
@@ -528,12 +612,47 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	neck = /obj/item/clothing/neck/roguetown/chaincoif/chainmantle
 	backr = /obj/item/rogueweapon/flail/peasantwarflail/matthios
 
+/obj/structure/ritualcircle/matthios/proc/matthiosconversion(mob/living/carbon/human/target)
+	if(HAS_TRAIT(target, TRAIT_COMMIE))
+		loc.visible_message(span_cult("THE RITE REJECTS ONE WITH GREED IN THEIR HEART ALREADY PRESENT!!"))
+		return
+	var/yesorno = list("SUBMISSION", "DEATH")
+	var/dialoguechoice = input(target, "SUBMISSION OR DEATH", src) as null|anything in yesorno
+	switch(dialoguechoice) // fuuck
+		if("SUBMISSION")
+			target.Stun(60)
+			target.Knockdown(60)
+			target.emote("Laugh")
+			playsound(loc, 'sound/misc/smelter_fin.ogg', 50)
+			loc.visible_message(span_cult("[target]'s eyes gleam and shine with a glimmer of a thousand gems and jewels, as they give in to their lust for wealth."))
+			spawn(20)
+				playsound(loc, 'sound/combat/hits/onmetal/grille (2).ogg', 50)
+				playsound(target, 'sound/health/slowbeat.ogg', 60)
+				target.set_patron(new /datum/patron/inhumen/matthios)
+				target.adjust_skillrank(/datum/skill/misc/climbing, 1, TRUE) //fuck do they gotta get? a better grip
+				target.adjust_skillrank(/datum/skill/misc/lockpicking, 1, TRUE)
+				target.adjust_skillrank(/datum/skill/misc/stealing, 1, TRUE)
+				target.change_stat("intelligence", 1)
+				target.change_stat("speed", 1)
+				target.change_stat("endurance", 1)
+				spawn(40)
+					to_chat(target, span_cult("More to the maw, for [target] shall feed their own greed along with us!"))
+		if("DEATH")
+			to_chat(target, span_warning("All that does glimmer could be yours... if only you would submit to your own greedy nature. Only final death awaits now, you, fellow most austere."))
+			target.Stun(60)
+			target.Knockdown(60)
+			to_chat(target, span_userdanger("UNIMAGINABLE PAIN!"))
+			target.emote("Agony")
+			target.apply_damage(100, BURN, HEAD)
+			loc.visible_message(span_cult("[target] is violently thrashing atop the rune, writhing, as they dare to defy MATTHIOS."))
+
+
 
 /obj/structure/ritualcircle/graggar
 	name = "Rune of Violence"
 	desc = "A Holy Rune of Graggar."
 	// icon_state = "graggar_chalky"
-	var/graggarrites = list("Rite of Armaments")
+	var/graggarrites = list("Rite of Armaments", "Conversion")
 
 /obj/structure/ritualcircle/graggar/attack_hand(mob/living/user)
 	if((user.patron?.type) != /datum/patron/inhumen/graggar)
@@ -566,6 +685,26 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 							//icon_state = "graggar_active" when we have one
 							user.apply_status_effect(/datum/status_effect/debuff/ritesexpended)
 							graggararmor(target)
+							//spawn(120)
+								//icon_state = "graggar_chalky" 
+		if("Conversion")
+			var/onrune = view(1, loc)
+			var/list/folksonrune = list()
+			for(var/mob/living/carbon/human/persononrune in onrune)
+				if(!HAS_TRAIT(persononrune, TRAIT_HORDE))
+					folksonrune += persononrune
+			var/target = input(user, "Choose a host") as null|anything in folksonrune
+			if(!target)
+				return
+			if(do_after(user, 50))
+				user.say("MOTIVE FORCE, OH, VIOLENCE!!")
+				if(do_after(user, 50))
+					user.say("A GORGEOUS BUFFET AWAITS US!!")
+					if(do_after(user, 50))
+						user.say("COME, JOIN ME IN THE SLAUGHTER MOST NOBLE, THE SLAUGHTER OF THE WEAK!!")
+						if(do_after(user, 50))
+							//icon_state = "graggar_active" when we have one
+							graggarconversion(target)
 							//spawn(120)
 								//icon_state = "graggar_chalky" 
 
@@ -611,3 +750,48 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	neck = /obj/item/clothing/neck/roguetown/gorget/steel
 	cloak = /obj/item/clothing/cloak/graggar
 	r_hand = /obj/item/rogueweapon/greataxe/steel/doublehead/graggar
+
+/obj/structure/ritualcircle/graggar/proc/graggarconversion(src)
+	var/onrune = view(0, loc)
+	var/list/possible_targets = list()
+	for(var/mob/living/carbon/human/persononrune in onrune)
+		possible_targets += persononrune
+	var/mob/living/carbon/human/target
+	if(possible_targets.len)
+		target = pick(possible_targets)
+	else
+		to_chat(usr, "No valid targets are standing on the rune! You must stand directly on the rune to receive Graggar's blessing.")
+		return
+	if(HAS_TRAIT(target, TRAIT_HORDE))
+		loc.visible_message(span_cult("THE RITE REJECTS ONE WITH SLAUGHTER IN THEIR HEART!!"))
+		return
+	var/yesorno = list("SUBMISSION", "DEATH")
+	var/dialoguechoice = input(target, "SUBMISSION OR DEATH", src) as null|anything in yesorno
+	switch(dialoguechoice) // fuuck
+		if("SUBMISSION")
+			target.Stun(60)
+			target.Knockdown(60)
+			to_chat(target, span_userdanger("UNIMAGINABLE PAIN!"))
+			target.emote("Warcry")
+			playsound(loc, 'sound/combat/newstuck.ogg', 50)
+			loc.visible_message(span_cult("[target]'s imagines a lot of fragging, holy, they are gonna frag")) // i cant
+			spawn(20)
+				playsound(loc, 'sound/combat/hits/onmetal/grille (2).ogg', 50)
+				playsound(target, 'sound/misc/heroin_rush.ogg', 100)
+				playsound(target, 'sound/health/fastbeat.ogg', 100)
+				target.set_patron(new /datum/patron/inhumen/graggar)
+				target.adjust_skillrank(/datum/skill/misc/athletics, 1, TRUE)
+				target.adjust_skillrank(/datum/skill/labor/butchering, 1, TRUE)
+				target.change_stat("strength", 1) // do you even lift
+				target.change_stat("constitution", 1)
+				target.change_stat("endurance", 1)
+				spawn(40)
+					to_chat(target, span_cult("Break them."))
+		if("DEATH")
+			to_chat(target, span_warning("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!."))
+			target.Stun(60)
+			target.Knockdown(60)
+			to_chat(target, span_userdanger("UNIMAGINABLE PAIN!"))
+			target.emote("Agony")
+			target.apply_damage(150, BRUTE, HEAD)
+			loc.visible_message(span_cult("[target] is violently thrashing atop the rune, writhing, as they dare to defy GRAGGAR."))
