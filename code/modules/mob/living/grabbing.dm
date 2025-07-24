@@ -685,14 +685,18 @@
 		else if(HAS_TRAIT(user, TRAIT_HORDE))
 			// Horde trait allows safe blood drinking
 		else
-			// Non-vampires will vomit
-			to_chat(user, "<span class='warning'>I'm going to puke...</span>")
-			addtimer(CALLBACK(user, TYPE_PROC_REF(/mob/living/carbon, vomit), 0, TRUE), rand(8 SECONDS, 15 SECONDS))
+			// Non-vampires will vomit, but skip for wretch vampires
+			var/skip_vomit = FALSE
+			if(user.mind)
+				var/datum/antagonist/vampire/Vamp = user.mind.has_antag_datum(/datum/antagonist/vampire)
+				if(Vamp && Vamp.wretch_antag)
+					skip_vomit = TRUE
+			if(!skip_vomit)
+				to_chat(user, "<span class='warning'>I'm going to puke...</span>")
+				addtimer(CALLBACK(user, TYPE_PROC_REF(/mob/living/carbon, vomit), 0, TRUE), rand(8 SECONDS, 15 SECONDS))
 
 	C.blood_volume = max(C.blood_volume-15, 0)
 	C.handle_blood()
-	if(HAS_TRAIT(user, TRAIT_HORDE))
-		user.adjust_hydration(8)
 
 	playsound(user.loc, 'sound/misc/drink_blood.ogg', 100, FALSE, -4)
 
@@ -704,8 +708,14 @@
 	if(user.mind && user.mind.has_antag_datum(/datum/antagonist/vampire))
 		var/datum/antagonist/vampire/VDrinker = user.mind.has_antag_datum(/datum/antagonist/vampire)
 		if(VDrinker && VDrinker.wretch_antag)
-			VDrinker.vitae = min(VDrinker.vitae + 400, 5000)
-			to_chat(user, span_notice("I gain 400 vitae from drinking blood. Current vitae: [VDrinker.vitae]"))
+			var/vitae_gain = 600
+			var/blood_loss = 60
+			var/old_vitae = VDrinker.vitae
+			VDrinker.vitae = min(VDrinker.vitae + vitae_gain, 5000)
+			C.blood_volume = max(C.blood_volume - blood_loss, 0)
+			C.handle_blood()
+			to_chat(user, span_notice("You gain [VDrinker.vitae - old_vitae] vitae from drinking blood. Current vitae: [VDrinker.vitae]"))
+			to_chat(C, span_warning("You feel a massive amount of blood being drained from you!"))
 		else if(VDrinker && !C.mind)
 			to_chat(user, span_warning("This blood is not pure enough to nourish me properly!"))
 		

@@ -5,19 +5,13 @@
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
-
 	allowed_races = RACES_ALL_KINDS
 	allowed_ages = list(AGE_ADULT)
-
 	tutorial = "Working under the tutelage of the court physician, you still remain a mere apprentice in the medical arts. Woe is the one who has to suffer your hand holding the scalpel when your master is out."
-
 	outfit = /datum/outfit/job/roguetown/apothecary
-
 	cmode_music = 'sound/music/combat_physician.ogg'
-
 	display_order = JDO_APOTHECARY
 	give_bank_account = 30
-
 	min_pq = 0
 	max_pq = null
 	round_contrib_points = 2

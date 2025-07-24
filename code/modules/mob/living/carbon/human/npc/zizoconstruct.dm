@@ -2,9 +2,9 @@ GLOBAL_LIST_INIT(zizoconstruct_aggro, world.file2list("strings/rt/zconstructaggr
 
 /mob/living/carbon/human/species/construct/metal/zizoconstruct
 
-	race = /datum/species/construct/metal
-	name_override = "Bronze Construct"
-	desc = "A bio-mechanical construct given life by dubious magics. This one is made almost entirely of bronze. It seems poorly made."
+	race = /datum/species/golem/metal
+	name_override = "Bronze Golem"
+	desc = "A bio-mechanical Golem given life by dubious magics. This one is made almost entirely of bronze. It seems poorly made."
 	faction = list("dundead")
 	var/zc_outfit = /datum/outfit/job/roguetown/human/species/construct/metal/zizoconstruct
 	ambushable = FALSE
@@ -41,7 +41,7 @@ GLOBAL_LIST_INIT(zizoconstruct_aggro, world.file2list("strings/rt/zconstructaggr
 
 /mob/living/carbon/human/species/construct/metal/zizoconstruct/after_creation()
 	..()
-	job = "Zizo Construct"
+	job = "Zizo Golem"
 	ADD_TRAIT(src, TRAIT_NOMOOD, TRAIT_GENERIC)
 	ADD_TRAIT(src, TRAIT_INFINITE_ENERGY, TRAIT_GENERIC)
 	ADD_TRAIT(src, TRAIT_NOPAIN, TRAIT_GENERIC)
@@ -54,9 +54,9 @@ GLOBAL_LIST_INIT(zizoconstruct_aggro, world.file2list("strings/rt/zconstructaggr
 	skin_tone = "e2a670"
 	
 	if(gender == FEMALE)
-		real_name = pick("Bronze Construct")
+		real_name = pick("Bronze Golem")
 	else
-		real_name = pick("Bronze Construct")
+		real_name = pick("Bronze Golem")
 	update_body()
 	if(zc_outfit)
 		var/datum/outfit/OU = new zc_outfit
@@ -80,8 +80,8 @@ GLOBAL_LIST_INIT(zizoconstruct_aggro, world.file2list("strings/rt/zconstructaggr
 	H.adjust_skillrank(/datum/skill/misc/climbing, 2, TRUE)
 
 /obj/item/rogueweapon/knuckles/bronzeknuckles/zizoconstruct //I have no unarmed and I must parry. More interesting than defprob and gives construct PC a fun item to loot and use
-	name = "construct knuckles"
-	desc = "A vicous pair of bronze knuckles designed specifically for constructs. There is a terrifying, hollow spike in the center of the grip. There doesn't seem to be a way to wield it without impaling yourself."
+	name = "golem knuckles"
+	desc = "A vicous pair of bronze knuckles designed specifically for golems. There is a terrifying, hollow spike in the center of the grip. There doesn't seem to be a way to wield it without impaling yourself."
 	wdefense = 11
 	color = "#5f1414"
 	max_integrity = 500
@@ -95,9 +95,9 @@ GLOBAL_LIST_INIT(zizoconstruct_aggro, world.file2list("strings/rt/zconstructaggr
 		playsound(get_turf(user), 'sound/misc/drink_blood.ogg', 100) 
 	..()
 
-/obj/item/clothing/suit/roguetown/armor/skin_armor/zizoconstructarmor //ww armor but for construct
+/obj/item/clothing/suit/roguetown/armor/skin_armor/zizoconstructarmor //ww armor but for golem
 	slot_flags = SHIRT_LAYER
-	name = "construct plating"
+	name = "golem plating"
 	desc = ""
 	icon_state = null
 	body_parts_covered = FULL_BODY

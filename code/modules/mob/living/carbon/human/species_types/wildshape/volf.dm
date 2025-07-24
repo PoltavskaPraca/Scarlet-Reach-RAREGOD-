@@ -6,6 +6,10 @@
 	skin_armor = new /obj/item/clothing/suit/roguetown/armor/skin_armor/wolf_skin
 	// Someone else balance this, I am here for code, not numbers
 
+//BUCKLING
+/mob/living/carbon/human/species/wildshape/volf/buckle_mob(mob/living/target, force = TRUE, check_loc = TRUE, lying_buckle = FALSE, hands_needed = 0, target_hands_needed = 0)
+	. = ..(target, force, check_loc, lying_buckle, hands_needed, target_hands_needed)
+
 /mob/living/carbon/human/species/wildshape/volf/gain_inherent_skills()
 	. = ..()
 	if(src.mind)
@@ -16,7 +20,7 @@
 		src.adjust_skillrank(/datum/skill/misc/tracking, 4, TRUE) //'Tracker' transformation
 		src.adjust_skillrank(/datum/skill/misc/sneaking, 3, TRUE) //Stalking
 
-		src.STASTR = 7
+		src.STASTR = 10
 		src.STACON = 7
 		src.STAPER = 12
 		src.STASPD = 13

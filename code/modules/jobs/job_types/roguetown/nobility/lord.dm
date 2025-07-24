@@ -10,7 +10,7 @@ GLOBAL_LIST_EMPTY(lord_titles)
 	total_positions = 1
 	spawn_positions = 1
 	selection_color = JCOLOR_NOBLE
-	allowed_races = RACES_TOLERATED_UP
+	allowed_races = RACES_NOBILITY_ELIGIBLE_UP
 	allowed_patrons = NON_PSYDON_PATRONS
 	advclass_cat_rolls = list(CTAG_LORD = 20)
 	allowed_sexes = list(MALE, FEMALE)
@@ -294,6 +294,8 @@ GLOBAL_LIST_EMPTY(lord_titles)
 		GLOB.lord_titles -= recruit.real_name
 		return FALSE
 	recruiter.say("I HEREBY GRANT YOU, [uppertext(recruit.name)], THE TITLE OF [uppertext(granted_title)]!")
+	REMOVE_TRAIT(recruit, TRAIT_OUTLANDER, ADVENTURER_TRAIT)
+	REMOVE_TRAIT(recruit, TRAIT_OUTLANDER, TRAIT_GENERIC)
 	GLOB.lord_titles[recruit.real_name] = granted_title
 	return TRUE
 

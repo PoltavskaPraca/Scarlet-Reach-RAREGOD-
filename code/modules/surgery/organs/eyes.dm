@@ -139,7 +139,7 @@
 
 
 /obj/item/organ/eyes/night_vision/argonian
-	name = "sissean eyes"
+	name = "zardman eyes"
 	desc = ""
 
 /obj/item/organ/eyes/night_vision/alien
@@ -151,9 +151,9 @@
 	name = "undead eyes"
 	desc = ""
 
-/obj/item/organ/eyes/construct
-	name = "construct eyes"
-	desc = "Some beast's eyes, preserved through artifice and with magical rock embedded in their back. Seems to fit a construct's head."
+/obj/item/organ/eyes/golem
+	name = "golem eyes"
+	desc = "Some beast's eyes, preserved through artifice and with magical rock embedded in their back. Seems to fit a golem's head."
 	icon_state = "eyeball-con"
 	
 /obj/item/organ/eyes/night_vision/zombie/on_life()

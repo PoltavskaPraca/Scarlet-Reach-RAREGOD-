@@ -6,7 +6,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	allowed_sexes = list(MALE, FEMALE)
-	allowed_races = RACES_SHUNNED_UP//You're not doing good work. You are the bad guy, to be frank.
+	allowed_races = RACES_SECOND_CLASS_NO_GOLEM		//Not been around long enough to be inquisitor, brand new race to the world.
 	allowed_patrons = ALL_DIVINE_PATRONS //psydon is dead confirmed
 	tutorial = "You have been sent here as an envoy from the Sovereignty of Holy see of the Ten : a silver-tipped olive branch, unmatched in aptitude and unshakable in faith to the Ten. Though you might be ostracized due to your overzealous beliefs, neither the Church nor Crown can deny your value, whenever matters of inhumenity arise to threaten this fief."
 	whitelist_req = TRUE
@@ -130,25 +130,42 @@
 	H.verbs |= /mob/living/carbon/human/proc/faith_test
 	H.verbs |= /mob/living/carbon/human/proc/torture_victim
 	ADD_TRAIT(H, TRAIT_STEELHEARTED, TRAIT_GENERIC)
-	ADD_TRAIT(H, TRAIT_MEDIUMARMOR, TRAIT_GENERIC)
+	ADD_TRAIT(H, TRAIT_HEAVYARMOR, TRAIT_GENERIC)
 	ADD_TRAIT(H, TRAIT_SILVER_BLESSED, TRAIT_GENERIC)
 	ADD_TRAIT(H, TRAIT_INQUISITION, TRAIT_GENERIC)
 	ADD_TRAIT(H, TRAIT_PERFECT_TRACKER, TRAIT_GENERIC)
 	ADD_TRAIT(H, TRAIT_PURITAN, JOB_TRAIT)
 	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy
-	armor = /obj/item/clothing/suit/roguetown/armor/plate/half/fluted/ornate
+	armor = /obj/item/clothing/suit/roguetown/armor/plate/fluted/ornate
 	belt = /obj/item/storage/belt/rogue/leather/steel
 	neck = /obj/item/clothing/neck/roguetown/chaincoif/chainmantle
 	shoes = /obj/item/clothing/shoes/roguetown/boots/otavan/inqboots
 	pants = /obj/item/clothing/under/roguetown/chainlegs/kilt
 	cloak = /obj/item/clothing/cloak/cape/puritan
 	backr = /obj/item/storage/backpack/rogue/satchel/black
-	backl = /obj/item/rogueweapon/shield/tower/metal
 	beltr = /obj/item/storage/belt/rogue/pouch/coins/rich
-	head = /obj/item/clothing/head/roguetown/helmet/heavy/psydonhelm
 	gloves = /obj/item/clothing/gloves/roguetown/otavan/inqgloves
-	beltl = /obj/item/rogueweapon/sword/long/psysword
+	beltl = /obj/item/rogueweapon/sword/long/psysword/preblessed
 	backpack_contents = list(/obj/item/storage/keyring/puritan = 1, /obj/item/lockpickring/mundane = 1, /obj/item/rogueweapon/huntingknife/idagger/silver/psydagger/preblessed, /obj/item/grapplinghook = 1, /obj/item/storage/belt/rogue/pouch/coins/rich = 1)
+
+	var/helmets = list(
+	"Ornate Barbute" 	= /obj/item/clothing/head/roguetown/helmet/heavy/psydonbarbute,
+	"Ornate Armet" 		= /obj/item/clothing/head/roguetown/helmet/heavy/psydonhelm,
+	"None"
+	)
+	var/helmchoice = input("Choose your Helm.", "TAKE UP HELMS") as anything in helmets
+	if(helmchoice != "None")
+		head = helmets[helmchoice]
+
+	var/shields = list(
+	"Holy Shield (Light)" 	= /obj/item/rogueweapon/shield/tower/metal/holysee,
+	"Holy Shield (Dark)" 	= /obj/item/rogueweapon/shield/tower/metal/holysee/dark,
+	"Weapon Strap" 			=/obj/item/gwstrap,
+	"None"
+	)
+	var/shieldchoice = input("Choose your Auxiliary.", "TAKE UP SHIELD") as anything in shields
+	if(shieldchoice != "None")
+		backl = shields[shieldchoice]
 
 /obj/item/clothing/gloves/roguetown/chain/blk
 		color = CLOTHING_GREY

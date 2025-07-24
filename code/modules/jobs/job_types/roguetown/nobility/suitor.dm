@@ -5,14 +5,11 @@
 	faction = "Station"
 	total_positions = 0
 	spawn_positions = 0
-
 	allowed_sexes = list(MALE, FEMALE)
-	allowed_races = RACES_TOLERATED_UP
+	allowed_races = RACES_NOBILITY_ELIGIBLE_UP
 	advclass_cat_rolls = list(CTAG_CONSORT = 20)
 	tutorial = "You are a noble from a foreign court who has travelled to Scarlet Reach in order to win the hand of Scarlet's most eligible bachelor and secure a political ally for your house. Competition is fierce, and it seems you're not the only one vying for the duke's favor..."
-
 	outfit = /datum/outfit/job/roguetown/suitor
-
 	display_order = JDO_SUITOR
 	give_bank_account = 40
 	noble_income = 20

@@ -58,7 +58,7 @@
 	beltl = /obj/item/storage/belt/rogue/pouch/coins/mid
 	beltr = /obj/item/rogueweapon/huntingknife/idagger/silver/psydagger/preblessed
 	id = /obj/item/clothing/ring/silver
-	backpack_contents = list(/obj/item/roguekey/inquisition = 1)
+	backpack_contents = list(/obj/item/storage/keyring/orthodoxist = 1)
 	H.adjust_skillrank(/datum/skill/combat/swords, 3, TRUE)
 	H.adjust_skillrank(/datum/skill/combat/maces, 3, TRUE)
 	H.adjust_skillrank(/datum/skill/combat/whipsflails, 3, TRUE)

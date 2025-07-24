@@ -61,18 +61,18 @@
 	w_class = WEIGHT_CLASS_NORMAL // We want them to be placeable in headhook
 	grid_height = 96
 	grid_width = 96
-	sellprice = 80
+	sellprice = 40
 
 /obj/item/natural/head/troll/axe
 	name = "troll head"
 	desc = "The head of a once mighty warrior troll."
 	icon_state = "trollhead_axe"
-	sellprice = 110
+	sellprice = 55
 
 /obj/item/natural/head/troll/cave
 	name = "cave troll head"
 	icon_state = "cavetrollhead"
-	sellprice = 130
+	sellprice = 65
 
 /obj/item/natural/head/minotaur
 	name = "minotaur head"
@@ -82,7 +82,7 @@
 	w_class = WEIGHT_CLASS_NORMAL // We want them to be placeable in headhook
 	grid_height = 96
 	grid_width = 96
-	sellprice = 100
+	sellprice = 50
 
 /obj/item/natural/head/dragon/
 	name = "dragon head"

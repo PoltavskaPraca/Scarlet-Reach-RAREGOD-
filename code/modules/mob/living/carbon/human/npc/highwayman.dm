@@ -13,9 +13,9 @@ GLOBAL_LIST_INIT(highwayman_aggro, world.file2list("strings/rt/highwaymanaggroli
 
 
 /mob/living/carbon/human/species/human/northern/highwayman/ambush
-	aggressive=1
-
-	wander = TRUE
+	aggressive = 1
+	mode = NPC_AI_IDLE
+	wander = FALSE
 
 /mob/living/carbon/human/species/human/northern/highwayman/retaliate(mob/living/L)
 	var/newtarg = target

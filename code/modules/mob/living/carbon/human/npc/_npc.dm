@@ -153,26 +153,26 @@
 /mob/living/carbon/human/proc/npc_idle()
 	if(m_intent == MOVE_INTENT_SNEAK)
 		return
-	if(world.time < next_idle + rand(3 SECONDS, 5 SECONDS))
+	if(world.time < next_idle)
 		return
+
 	NPC_THINK("Idle...")
 	next_idle = world.time + rand(3 SECONDS, 5 SECONDS)
-	if((mobility_flags & MOBILITY_MOVE) && isturf(loc))
-		if(wander)
-			if(prob(50))
-				var/turf/T = get_step(loc,pick(GLOB.cardinals))
-				if(T.can_traverse_safely(src)) // Don't wander into lava or open space unless we're immune to it/can't fall.
-					step_towards(src, T, cached_multiplicative_slowdown)
-			else
-				setDir(turn(dir, pick(90,-90)))
+
+	if((mobility_flags & MOBILITY_MOVE) && isturf(loc) && wander)
+		if(prob(50))
+			var/turf/T = get_step(loc, pick(GLOB.cardinals))
+			if(T && T.can_traverse_safely(src)) // Don't wander into lava or open space unless we're immune to it/can't fall.
+				step_towards(src, T, cached_multiplicative_slowdown)
 		else
-			setDir(turn(dir, pick(90,-90)))
+			setDir(turn(dir, pick(90, -90)))
+
 	if(prob(3))
 		emote("idle")
 
 /mob/living/carbon/human/proc/deaggrodel()
 	if(aggressive)
-		for(var/mob/living/L in view(7)) // scan for enemies
+		for(var/mob/living/L in view(3)) // scan for enemies
 			if( should_target(L) && (L != src))
 				if(L.stat != DEAD)
 					retaliate(L)

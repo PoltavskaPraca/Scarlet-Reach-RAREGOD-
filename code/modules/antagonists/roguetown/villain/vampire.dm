@@ -29,6 +29,7 @@
 	var/cache_hair
 	var/obj/effect/proc_holder/spell/targeted/shapeshift/bat/batform //attached to the datum itself to avoid cloning memes, and other duplicates
 	var/wretch_antag = FALSE
+	var/vitae_tick_counter = 0
 
 /datum/antagonist/vampire/examine_friendorfoe(datum/antagonist/examined_datum,mob/examiner,mob/examined)
 	if(istype(examined_datum, /datum/antagonist/vampire/lesser))
@@ -67,6 +68,8 @@
 	ADD_TRAIT(owner.current, TRAIT_NOPAIN, TRAIT_GENERIC)
 	ADD_TRAIT(owner.current, TRAIT_TOXIMMUNE, TRAIT_GENERIC)
 	ADD_TRAIT(owner.current, TRAIT_STEELHEARTED, TRAIT_GENERIC)
+	ADD_TRAIT(owner.current, TRAIT_NASTY_EATER, TRAIT_GENERIC)
+	ADD_TRAIT(owner.current, TRAIT_BLOODLOSS_IMMUNE, TRAIT_GENERIC)
 	owner.current.cmode_music = 'sound/music/combat_vamp2.ogg'
 	var/obj/item/organ/eyes/eyes = owner.current.getorganslot(ORGAN_SLOT_EYES)
 	if(eyes)
@@ -138,12 +141,16 @@
 				var/turf/T = H.loc
 				if(T.can_see_sky())
 					if(T.get_lumcount() > 0.15)
+						// Cache antagonist lookup to avoid repeated lookups
+						var/datum/antagonist/vampire/wretch_vamp = H.mind?.has_antag_datum(/datum/antagonist/vampire)
+						var/is_wretch = wretch_vamp && wretch_vamp.wretch_antag
+						
 						if(!disguised)
 							H.fire_act(1,2)
-						// Also check for wretch vampires
-						var/datum/antagonist/vampire/wretch_vamp = H.mind?.has_antag_datum(/datum/antagonist/vampire)
-						if(wretch_vamp && wretch_vamp.wretch_antag && !wretch_vamp.disguised)
-							H.fire_act(1,2)
+						// Only apply additional fire damage if wretch vampire and not already handled
+						if(is_wretch && !disguised)
+							H.fire_act(1,5)
+							wretch_vamp.vitae = max(wretch_vamp.vitae - 10, 0)
 
 	if(H.on_fire)
 		if(disguised)
@@ -155,31 +162,38 @@
 		if(istype(H.loc, /obj/structure/closet/crate/coffin))
 			H.fully_heal()
 
+	// Optimized vitae management for wretch vampires
 	if(wretch_antag)
+		// Only check blood volume when it might exceed the cap
 		if(H.blood_volume > 5000)
 			H.blood_volume = 5000
+		// Only check vitae cap when it might exceed
 		if(vitae > 5000)
 			vitae = 5000
-		vitae = max(vitae - 1, 0)
+		// Only update vitae every minute instead of every tick
+		vitae_tick_counter++
+		if(vitae_tick_counter >= 120)  // Every 120 ticks = 1 minute
+			vitae = max(vitae - 60, 0)  // Lose 60 vitae per minute instead of 1 per tick
+			vitae_tick_counter = 0  // Reset counter
 	else
 		vitae = CLAMP(vitae, 0, 1666)
-
-	if(vitae > 0)
-		H.blood_volume = BLOOD_VOLUME_MAXIMUM
-		if(vitae < 200)
-			if(disguised)
-				to_chat(H, "<span class='warning'>My disguise fails!</span>")
-				H.vampire_undisguise(src)
-		// Only decrement vitae every 5 ticks
-		if(world.time % 50 == 0)
-			vitae -= 1
-	else
-		to_chat(H, "<span class='userdanger'>I RAN OUT OF VITAE!</span>")
-		var/obj/shapeshift_holder/SS = locate() in H
-		if(SS)
-			SS.shape.dust()
-		H.dust()
-		return
+		// Non-wretch vampire vitae management
+		if(vitae > 0)
+			H.blood_volume = BLOOD_VOLUME_MAXIMUM
+			if(vitae < 200)
+				if(disguised)
+					to_chat(H, "<span class='warning'>My disguise fails!</span>")
+					H.vampire_undisguise(src)
+			// Only decrement vitae every 5 ticks
+			if(world.time % 50 == 0)
+				vitae -= 1
+		else
+			to_chat(H, "<span class='userdanger'>I RAN OUT OF VITAE!</span>")
+			var/obj/shapeshift_holder/SS = locate() in H
+			if(SS)
+				SS.shape.dust()
+			H.dust()
+			return
 
 /mob/living/carbon/human/proc/disguise_button()
 	set name = "Disguise"
@@ -446,7 +460,7 @@
 		to_chat(src, span_warning("My BANE is not letting me REGEN!."))
 		return
 	
-	var/vitae_cost = 300
+	var/vitae_cost = 500
 	if(is_wretch)
 		if(Vamp.vitae < vitae_cost)
 			to_chat(src, span_warning("Not enough vitae."))
@@ -461,11 +475,40 @@
 	
 	if(is_wretch)
 		Vamp.vitae -= vitae_cost
+		// Wound healing
+		var/list/wCount = get_wounds()
+		if(wCount.len > 0)
+			heal_wounds(30)
+			update_damage_overlays()
+			if(prob(10))
+				to_chat(src, span_nicegreen("I feel my wounds mending."))
+		// Stop all bleeding (health potion logic: expire bandages, remove status effects)
+		for(var/obj/item/bodypart/BP as anything in bodyparts)
+			if(BP.bandage)
+				BP.try_bandage_expire()
+		// Remove bleeding status effects
+		remove_status_effect(/datum/status_effect/debuff/bleeding)
+		remove_status_effect(/datum/status_effect/debuff/bleedingworse)
+		remove_status_effect(/datum/status_effect/debuff/bleedingworst)
+		// Damage healing - FLAT 50 HEALING
+		adjustBruteLoss(-50, 0)
+		adjustFireLoss(-50, 0)
+		adjustOxyLoss(-50, 0)
+		adjustCloneLoss(-50, 0)
+		for(var/obj/item/organ/organny in internal_organs)
+			adjustOrganLoss(organny.slot, -50)
+		// Heal bodypart damage (including "battered" limbs) - FLAT 50 HEALING
+		var/healed_bodyparts = FALSE
+		for(var/obj/item/bodypart/BP as anything in bodyparts)
+			if(BP.brute_dam > 0 || BP.burn_dam > 0)
+				BP.heal_damage(50, 50, 0)
+				healed_bodyparts = TRUE
+		if(healed_bodyparts)
+			update_damage_overlays()
 	else
 		VDL.handle_vitae(-vitae_cost)
-	
-	fully_heal()
-	regenerate_limbs()
+		fully_heal()
+		regenerate_limbs()
 
 /mob/living/carbon/human/proc/vampire_infect()
 	if(!mind)
@@ -524,3 +567,9 @@
 	V.update_hair()
 	V.update_body_parts(redraw = TRUE)
 	V.mob_biotypes = MOB_UNDEAD
+
+/mob/living/carbon/human/proc/on_hit_by_silver_weapon()
+	var/datum/antagonist/vampire/Vamp = mind?.has_antag_datum(/datum/antagonist/vampire)
+	if(Vamp && Vamp.wretch_antag && !Vamp.disguised)
+		to_chat(src, span_userdanger("The silver weapon burns my flesh! My curse is revealed!"))
+		apply_status_effect(/datum/status_effect/debuff/silver_curse)

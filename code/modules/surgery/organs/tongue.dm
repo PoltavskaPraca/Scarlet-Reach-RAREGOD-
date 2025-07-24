@@ -53,8 +53,8 @@
 /obj/item/organ/tongue/could_speak_in_language(datum/language/dt)
 	return is_type_in_typecache(dt, languages_possible)
 
-/obj/item/organ/tongue/construct
-	name = "construct tongue"
+/obj/item/organ/tongue/golem
+	name = "golem tongue"
 	desc = "A beast's tongue, preserved through artifice and with crystals embedded in the base. It seems rather dead..."
 	icon_state = "tongue-con"
 	say_mod = "crackles"

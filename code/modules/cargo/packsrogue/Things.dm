@@ -86,7 +86,7 @@
 
 /datum/supply_pack/rogue/Things/Dragonscale
 	name = "Dragonscale Necklace"
-	cost = 900
+	cost = 1800
 	contains = list(/obj/item/clothing/neck/roguetown/blkknight)
 
 /datum/supply_pack/rogue/Things/smokebomb

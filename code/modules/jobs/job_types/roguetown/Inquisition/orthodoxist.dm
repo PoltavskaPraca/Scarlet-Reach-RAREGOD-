@@ -5,7 +5,7 @@
 	faction = "Station"
 	total_positions = 3 // THREE GOONS!!
 	spawn_positions = 3
-	allowed_races = RACES_ALL_KINDS
+	allowed_races = RACES_SECOND_CLASS_NO_GOLEM
 	allowed_patrons = ALL_DIVINE_PATRONS
 	tutorial = "Whether hand-picked by the Sovereignty of the Church or taken along through mere circumstance, you now serve as a loyal adherent to the Inquisitor's retinue. Descend into the darkness and - be it with a clenched fist or an opened palm - bring the inhumen towards the light: gift them salvation or damnation."
 	selection_color = JCOLOR_INQUISITION

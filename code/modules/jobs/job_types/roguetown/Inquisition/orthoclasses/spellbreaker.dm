@@ -46,7 +46,7 @@
 	armor = /obj/item/clothing/suit/roguetown/armor/leather/studded
 
 	backpack_contents = list(
-		/obj/item/roguekey/inquisition = 1,
+		/obj/item/storage/keyring/orthodoxist = 1,
 		/obj/item/rope/chain = 1,
 	)
 	if(H.mind)

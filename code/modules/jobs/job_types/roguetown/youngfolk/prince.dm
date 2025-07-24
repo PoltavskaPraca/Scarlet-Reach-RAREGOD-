@@ -7,7 +7,7 @@
 	total_positions = 2
 	spawn_positions = 2
 	f_title = "Princess"
-	allowed_races = RACES_TOLERATED_UP //Maybe a system to force-pick lineage based on king and queen should be implemented. (No it shouldn't.)
+	allowed_races = RACES_NOBILITY_ELIGIBLE_UP //Maybe a system to force-pick lineage based on king and queen should be implemented. (No it shouldn't.)
 	allowed_patrons = NON_PSYDON_PATRONS
 	allowed_sexes = list(MALE, FEMALE)
 	allowed_ages = list(AGE_ADULT)
@@ -33,8 +33,6 @@
 		Q.advsetup = 1
 		Q.invisibility = INVISIBILITY_MAXIMUM
 		Q.become_blind("advsetup")
-
-
 
 /datum/advclass/heir/daring
 	name = "Daring Twit"

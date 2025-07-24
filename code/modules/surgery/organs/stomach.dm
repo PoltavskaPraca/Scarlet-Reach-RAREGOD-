@@ -95,10 +95,10 @@
 	icon_state = "stomach-p"
 	desc = ""
 
-/obj/item/organ/stomach/construct
-	name = "construct soulseed"
+/obj/item/organ/stomach/golem
+	name = "golem soulseed"
 	icon_state = "stomach-con"
-	desc = "The seat of a construct's soul, where a stomach would go. Wisps of lux cycle about, impossible to grab."
+	desc = "The seat of a golem's soul, where a stomach would go. Wisps of lux cycle about, impossible to grab."
 
 /obj/item/organ/stomach/ethereal
 	name = "biological battery"

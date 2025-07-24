@@ -18,8 +18,9 @@ GLOBAL_LIST_INIT(dwarfskeleton_aggro, world.file2list("strings/rt/dskeletonaggro
 	possible_rmb_intents = list(/datum/rmb_intent/feint, /datum/rmb_intent/aimed, /datum/rmb_intent/strong, /datum/rmb_intent/weak)
 
 /mob/living/carbon/human/species/dwarfskeleton/ambush
-	aggressive=1
-	wander = TRUE
+	aggressive = 1
+	mode = NPC_AI_IDLE
+	wander = FALSE
 
 /mob/living/carbon/human/species/dwarfskeleton/retaliate(mob/living/L)
 	.=..()

@@ -12,7 +12,7 @@
 #define STATS_ALIVE_TIEFLINGS "alive_tieflings"
 #define STATS_ALIVE_HALFKIN "alive_halfkin"
 #define STATS_ALIVE_WILDKIN "alive_wildkin"
-#define STATS_ALIVE_CONSTRUCTS "alive_constructs"
+#define STATS_ALIVE_GOLEMS "alive_golems"
 #define STATS_ALIVE_VERMINFOLK "alive_verminfolk"
 #define STATS_ALIVE_DRACON "alive_dracon"
 #define STATS_ALIVE_AXIAN "alive_axian"
@@ -215,7 +215,7 @@ GLOBAL_LIST_INIT(scarlet_round_stats, list(
 	STATS_ALIVE_TIEFLINGS = 0,
 	STATS_ALIVE_HALFKIN = 0,
 	STATS_ALIVE_WILDKIN = 0,
-	STATS_ALIVE_CONSTRUCTS = 0,
+	STATS_ALIVE_GOLEMS = 0,
 	STATS_ALIVE_VERMINFOLK = 0,
 	STATS_ALIVE_DRACON = 0,
 	STATS_ALIVE_AXIAN = 0,

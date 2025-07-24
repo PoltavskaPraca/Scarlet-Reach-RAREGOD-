@@ -28,7 +28,9 @@
 	wander = FALSE
 
 /mob/living/carbon/human/species/goblin/npc/ambush
-	wander = TRUE
+	aggressive = 1
+	mode = NPC_AI_IDLE
+	wander = FALSE
 	attack_speed = 2
 
 /mob/living/carbon/human/species/goblin/hell

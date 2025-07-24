@@ -5,7 +5,7 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
-	allowed_races = RACES_TOLERATED_UP
+	allowed_races = RACES_APPOINTED_OUTCASTS_UP
 	allowed_patrons = NON_PSYDON_PATRONS
 	allowed_sexes = list(MALE, FEMALE)
 	display_order = JDO_PHYSICIAN
@@ -16,12 +16,10 @@
 		Now you serve in the Duke's court ensuring the good health of those inhabiting the keep."
 	outfit = /datum/outfit/job/roguetown/physician
 	whitelist_req = TRUE
-
 	give_bank_account = 30
 	min_pq = 3 //Please don't kill the duke by operating on strong intent. Play apothecary until you're deserving of the great white beak of doom
 	max_pq = null
 	round_contrib_points = 3
-
 	cmode_music = 'sound/music/combat_physician.ogg'
 
 /datum/outfit/job/roguetown/physician

@@ -6,12 +6,8 @@
 	faction = "Station"
 	total_positions = 6
 	spawn_positions = 6
-
 	allowed_races = RACES_ALL_KINDS
-	allowed_ages = ALL_AGES_LIST
-
 	tutorial = "Granted a life of comfortable servitude in the Duke's manor, you follow the Seneschal's commands and spend your day performing necessary but menial tasks. This role offers an aesthetic choice between labor-servant, maid, and butler."
-
 	outfit = /datum/outfit/job/roguetown/servant
 	advclass_cat_rolls = list(CTAG_SERVANT = 20)
 	display_order = JDO_SERVANT

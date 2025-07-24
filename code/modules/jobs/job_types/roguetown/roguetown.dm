@@ -74,7 +74,7 @@
 			if(H.dna.species)
 				if(H.dna.species.name in list("Elf", "Half-Elf"))
 					H.adjust_skillrank(/datum/skill/misc/reading, 1, TRUE)
-				if(H.dna.species.name in list("Metal Construct"))
+				if(H.dna.species.name in list("Golem"))
 					H.adjust_skillrank(/datum/skill/craft/engineering, 2, TRUE)
 	H.update_body()
 

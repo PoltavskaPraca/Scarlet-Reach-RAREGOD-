@@ -20,7 +20,7 @@
 	created_item = /obj/item/roguestatue/iron
 
 /datum/anvil_recipe/valuables/aalloy
-	name = "Decrepit Statue"
+	name = "Statue"
 	req_bar = /obj/item/ingot/aalloy
 	created_item = /obj/item/roguestatue/aalloy
 
@@ -53,7 +53,7 @@
 	createditem_num = 3
 
 /datum/anvil_recipe/valuables/ringa
-	name = "Decrepit Rings 3x"
+	name = "Rings 3x"
 	req_bar = /obj/item/ingot/aalloy
 	created_item = /obj/item/clothing/ring/aalloy
 	createditem_num = 3
@@ -169,3 +169,9 @@
 	additional_items = list(/obj/item/ingot/gold, /obj/item/roguegem/blue, /obj/item/roguegem/violet, /obj/item/clothing/neck/roguetown/psicross/silver)
 	created_item = /obj/item/clothing/ring/dragon_ring
 	craftdiff = 6
+
+/datum/anvil_recipe/valuables/zcross_iron
+	name = "Inverted Psycross (1 iron)"
+	req_bar = /obj/item/ingot/iron
+	created_item = /obj/item/clothing/neck/roguetown/zcross/iron
+	craftdiff = 1

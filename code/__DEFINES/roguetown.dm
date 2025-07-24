@@ -124,24 +124,26 @@
 	/datum/species/goblinp,\
 )
 
-#define RACES_RESPECTED \
+#define RACES_NOBILITY_ELIGIBLE \
     /datum/species/human/northern,\
     /datum/species/elf/wood,\
-
-#define RACES_TOLERATED \
     /datum/species/human/halfelf,\
     /datum/species/demihuman,\
     /datum/species/dwarf/mountain,\
 
-#define RACES_NEUTRAL \
-    /datum/species/construct/metal,\
-    /datum/species/aasimar,\
+#define RACES_CHURCH_FAVORED \
+	/datum/species/aasimar,\
 
-#define RACES_SHUNNED \
+#define RACES_APPOINTED_OUTCASTS \
+    /datum/species/tieberian,\
+    /datum/species/elf/dark,\
+
+#define RACES_MANMADE \
+	/datum/species/golem/metal,\
+
+#define RACES_SECOND_CLASS \
     /datum/species/vulpkanin,\
     /datum/species/lupian,\
-    /datum/species/anthromorphsmall,\
-    /datum/species/kobold,\
     /datum/species/moth,\
     /datum/species/anthromorph,\
     /datum/species/tabaxi,\
@@ -149,28 +151,31 @@
     /datum/species/dracon,\
     /datum/species/akula,\
 
-#define RACES_DESPISED \
+#define RACES_FEARED \
+	/datum/species/halforc,\
+
+#define RACES_WIDELY_REVILED \
+    /datum/species/anthromorphsmall,\
+    /datum/species/kobold,\
     /datum/species/goblinp,\
-    /datum/species/halforc,\
-    /datum/species/tieberian,\
-    /datum/species/elf/dark,\
 
-#define RACES_CONSTRUCT \
-	/datum/species/construct/metal,\
+#define RACES_NOBILITY_ELIGIBLE_UP list(RACES_NOBILITY_ELIGIBLE)
 
-#define RACES_RESPECTED_UP list(RACES_RESPECTED)
+#define RACES_CHURCH_FAVORED_UP list(RACES_NOBILITY_ELIGIBLE, RACES_CHURCH_FAVORED)
 
-#define RACES_TOLERATED_UP list(RACES_TOLERATED, RACES_RESPECTED)
+#define RACES_APPOINTED_OUTCASTS_UP list(RACES_NOBILITY_ELIGIBLE, RACES_CHURCH_FAVORED, RACES_APPOINTED_OUTCASTS)
 
-#define RACES_NEUTRAL_UP list(RACES_RESPECTED, RACES_TOLERATED, RACES_NEUTRAL)
+#define RACES_MANMADE_UP list(RACES_NOBILITY_ELIGIBLE, RACES_CHURCH_FAVORED, RACES_APPOINTED_OUTCASTS, RACES_MANMADE)
 
-#define RACES_SHUNNED_UP list(RACES_RESPECTED, RACES_TOLERATED, RACES_NEUTRAL, RACES_SHUNNED)
+#define RACES_SECOND_CLASS_UP list(RACES_NOBILITY_ELIGIBLE, RACES_CHURCH_FAVORED, RACES_APPOINTED_OUTCASTS, RACES_MANMADE, RACES_SECOND_CLASS)
 
-#define RACES_DESPIED_UP list(RACES_RESPECTED, RACES_TOLERATED, RACES_NEUTRAL, RACES_SHUNNED, RACES_DESPISED)
+#define RACES_SECOND_CLASS_NO_GOLEM list(RACES_NOBILITY_ELIGIBLE, RACES_CHURCH_FAVORED, RACES_APPOINTED_OUTCASTS, RACES_SECOND_CLASS)
 
-#define RACES_ALL_KINDS list(RACES_DESPISED, RACES_SHUNNED, RACES_NEUTRAL, RACES_TOLERATED, RACES_RESPECTED, RACES_CONSTRUCT)
+#define RACES_FEARED_UP list(RACES_NOBILITY_ELIGIBLE, RACES_CHURCH_FAVORED, RACES_APPOINTED_OUTCASTS, RACES_MANMADE, RACES_SECOND_CLASS, RACES_FEARED)
 
-#define RACES_NO_CONSTRUCT list(RACES_DESPISED, RACES_SHUNNED, RACES_TOLERATED, RACES_RESPECTED)
+#define RACES_ALL_KINDS list(RACES_NOBILITY_ELIGIBLE, RACES_CHURCH_FAVORED, RACES_APPOINTED_OUTCASTS, RACES_MANMADE, RACES_SECOND_CLASS, RACES_FEARED, RACES_WIDELY_REVILED)
+
+#define RACES_NO_GOLEM list(RACES_NOBILITY_ELIGIBLE, RACES_CHURCH_FAVORED, RACES_APPOINTED_OUTCASTS, RACES_SECOND_CLASS, RACES_FEARED, RACES_WIDELY_REVILED)
 
 #define NOBLE_RACES_TYPES list(\
 	/datum/species/human/northern,\
@@ -192,7 +197,7 @@
 	/datum/species/demihuman,\
 	/datum/species/kobold,\
 	/datum/species/goblinp,\
-	/datum/species/construct/metal,\
+	/datum/species/golem/metal,\
 )
 
 #define CLOTHED_RACES_TYPES list(\
@@ -216,7 +221,7 @@
 	/datum/species/halforc,\
 	/datum/species/kobold,\
 	/datum/species/goblinp,\
-	/datum/species/construct/metal,\
+	/datum/species/golem/metal,\
 )
 // Non-dwarf non-kobold non-goblin mostly
 #define NON_DWARVEN_RACE_TYPES list(\
@@ -236,7 +241,7 @@
 	/datum/species/anthromorph,\
 	/datum/species/demihuman,\
 	/datum/species/halforc,\
-	/datum/species/construct/metal,\
+	/datum/species/golem/metal,\
 )
 // Non-elf non-dwarf non-kobold non-goblin mostly
 #define HUMANLIKE_RACE_TYPES list(\
@@ -252,7 +257,7 @@
 	/datum/species/dracon,\
 	/datum/species/anthromorph,\
 	/datum/species/demihuman,\
-	/datum/species/construct/metal,\
+	/datum/species/golem/metal,\
 )
 #define ALL_CLERIC_PATRONS list(/datum/patron/divine/astrata, /datum/patron/divine/noc, /datum/patron/divine/dendor, /datum/patron/divine/necra, /datum/patron/divine/pestra, /datum/patron/divine/ravox, /datum/patron/divine/malum, /datum/patron/divine/eora) // Currently unused.
 

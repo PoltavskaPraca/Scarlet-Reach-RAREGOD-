@@ -38,7 +38,7 @@
 			H.dna.species.soundpack_m = new /datum/voicepack/male/warrior()
 			H.set_blindness(0)
 			ADD_TRAIT(H, TRAIT_MEDIUMARMOR, TRAIT_GENERIC)
-			var/weapons = list("Longsword","Mace","Billhook","Battle Axe","Short Sword & Heater Shield")
+			var/weapons = list("Longsword","Mace","Billhook","Battle Axe","Short Sword & Iron Shield")
 			var/weapon_choice = input("Choose your weapon.", "TAKE UP ARMS") as anything in weapons
 			switch(weapon_choice)
 				if("Longsword")

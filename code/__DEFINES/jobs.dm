@@ -382,7 +382,7 @@
 	/datum/job/roguetown/wretch
 
 #define GARRISON_ROLES \
-	/datum/job/roguetown/bogguardsman,\
+	/datum/job/roguetown/warden,\
 	/datum/job/roguetown/sergeant,\
 	/datum/job/roguetown/dungeoneer,\
 	/datum/job/roguetown/gatemaster,\

@@ -193,4 +193,9 @@
 	name = "Poison Antidote"
 	cost = 10
 	contains = list(/obj/item/reagent_containers/glass/bottle/rogue/strong_antidote)
+
+/datum/supply_pack/rogue/Sawbones/emberwine
+	name = "Emberwine"
+	cost = 10
+	contains = list(/obj/item/reagent_containers/glass/bottle/rogue/emberwine)
 	

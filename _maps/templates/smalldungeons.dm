@@ -40,12 +40,7 @@
 		/obj/item/storage/belt/rogue/leather/knifebelt/black/steel = 1,
 
 		// Money
-		/obj/item/roguecoin/copper = 5,
-		/obj/item/roguecoin/silver = 5,
-		/obj/item/roguecoin/gold = 5,
-		/obj/item/roguecoin/copper/pile = 3,
-		/obj/item/roguecoin/silver/pile = 2,
-		/obj/item/roguecoin/gold/pile = 1,
+		// has been removed
 
 		// Garbage and Miscellanous
 		/obj/item/rogue/instrument/flute = 3,

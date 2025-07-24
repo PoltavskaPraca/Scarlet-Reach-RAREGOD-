@@ -7,7 +7,7 @@
 	total_positions = 8
 	spawn_positions = 8
 	allowed_sexes = list(MALE, FEMALE)
-	allowed_races = RACES_SHUNNED_UP
+	allowed_races = RACES_FEARED_UP
 	allowed_patrons = ALL_PATRONS
 	allowed_ages = list(AGE_ADULT, AGE_MIDDLEAGED)
 	tutorial = "Having proven yourself loyal and capable, you are entrusted to defend the town and enforce its laws. \
@@ -15,15 +15,12 @@
 				Obey your Sergeant-at-Arms, the Marshal, and the Crown. Show the nobles and knights your respect, so that you may earn it in turn. Not as a commoner, but as a soldier.."
 	display_order = JDO_CASTLEGUARD
 	whitelist_req = TRUE
-
 	outfit = /datum/outfit/job/roguetown/manorguard
 	advclass_cat_rolls = list(CTAG_MENATARMS = 20)
-
 	give_bank_account = 22
 	min_pq = 3
 	max_pq = null
 	round_contrib_points = 2
-
 	cmode_music = 'sound/music/combat_ManAtArms.ogg'
 
 /datum/outfit/job/roguetown/manorguard

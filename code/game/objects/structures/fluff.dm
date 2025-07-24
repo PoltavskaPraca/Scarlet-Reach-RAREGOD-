@@ -965,6 +965,9 @@
 	var/donatedamnt = W.get_real_price()
 	if(user.mind)
 		if(user)
+			if(W.flags_1 & HOARDMASTER_SPAWNED_1)
+				to_chat(user, span_warning("This item is from the Hoard!"))
+				return
 			if(W.sellprice <= 0)
 				to_chat(user, span_warning("This item is worthless."))
 				return
@@ -1081,102 +1084,91 @@
 
 /obj/structure/fluff/psycross/attackby(obj/item/W, mob/user, params)
 	if(user.mind)
-		if(user.mind.assigned_role == "Priest")
+		if(user.mind.assigned_role == "Priest" || user.mind.assigned_role == "Priestess")
 			if(istype(W, /obj/item/reagent_containers/food/snacks/grown/apple))
 				if(!istype(get_area(user), /area/rogue/indoors/town/church/chapel))
 					to_chat(user, span_warning("I need to do this in the chapel."))
 					return FALSE
-				var/marriage
+				var/marriage = FALSE
 				var/obj/item/reagent_containers/food/snacks/grown/apple/A = W
-				//The MARRIAGE TEST BEGINS
-				if(A.bitten_names.len)
-					if(A.bitten_names.len == 2)
-						//Groom provides the surname that the bride will take
-						var/mob/living/carbon/human/thegroom
-						var/mob/living/carbon/human/thebride
-						//Did anyone get cold feet on the wedding?
+				if(A.bitten_names.len == 2)
+					var/mob/living/carbon/human/thegroom
+					var/mob/living/carbon/human/thebride
+					// Find people by bite order, not random viewer order
+					for(var/bite_name in A.bitten_names)
+						var/found = FALSE
 						for(var/mob/M in viewers(src, 7))
-							testing("check [M]")
-							if(thegroom && thebride)
-								break
-							if(!ishuman(M))
-								continue
+							if(!ishuman(M)) continue
 							var/mob/living/carbon/human/C = M
-							/*
-							* This is for making the first biters name
-							* always be applied to the groom.
-							* second. This seems to be the best way
-							* to use the least amount of variables.
-							*/
-							var/name_placement = 1
-							for(var/X in A.bitten_names)
-								//I think that guy is dead.
-								if(C.stat == DEAD)
-									continue
-								//That person is not a player or afk.
-								if(!C.client)
-									continue
-								//Gotta get a divorce first
-								if(C.marriedto)
-									continue
-								if(C.real_name == X)
-									//I know this is very sloppy but its alot less code.
-									switch(name_placement)
-										if(1)
-											if(thegroom)
-												continue
-											thegroom = C
-										if(2)
-											if(thebride)
-												continue
-											thebride = C
-									testing("foundbiter [C.real_name]")
-									name_placement++
-
-						//WE FOUND THEM LETS GET THIS SHOW ON THE ROAD!
-						if(!thegroom || !thebride)
-							testing("fail22")
-							return
-						//Alright now for the boring surname formatting.
-						var/surname2use
-						var/index = findtext(thegroom.real_name, " ")
-						var/bridefirst
-						thegroom.original_name = thegroom.real_name
-						thebride.original_name = thebride.real_name
-						if(!index)
-							surname2use = thegroom.dna.species.random_surname()
+							if(C.stat == DEAD) continue
+							if(!C.client) continue
+							if(C.marriedto) continue
+							if(C.real_name == bite_name)
+								if(!thegroom)
+									thegroom = C  // First bite = groom
+								else if(!thebride)
+									thebride = C  // Second bite = bride
+								found = TRUE
+								break
+						if(found && thegroom && thebride)
+							break
+					if(thegroom && thebride)
+						// Excommunication check for both participants
+						var/excomm_found = FALSE
+						for(var/excomm_name in GLOB.excommunicated_players)
+							var/clean_excomm = lowertext(trim(excomm_name))
+							if(thegroom && clean_excomm == lowertext(trim(thegroom.real_name)))
+								excomm_found = TRUE
+								break
+							if(thebride && clean_excomm == lowertext(trim(thebride.real_name)))
+								excomm_found = TRUE
+								break
+						if(!excomm_found)
+							// Prompt priest for surname
+							var/surname = input(user, "Enter a surname for the couple:", "Marriage Ceremony") as text|null
+							if(!surname || !length(trim(surname)))
+								surname = thegroom.dna.species.random_surname()
+							// Ensure leading space for surname
+							if(!findtext(surname, " "))
+								surname = " [surname]"
+							// Assign surname to groom
+							var/list/groom_name_parts = splittext(thegroom.real_name, " ")
+							var/groom_first_name = groom_name_parts[1]
+							thegroom.real_name = "[groom_first_name] [surname]"
+							// Assign surname to bride
+							var/list/bride_name_parts = splittext(thebride.real_name, " ")
+							var/bride_first_name = bride_name_parts[1]
+							thebride.real_name = "[bride_first_name] [surname]"
+							// Private notification to both
+							if(thegroom) to_chat(thegroom, span_notice("Your new shared surname is [surname]."))
+							if(thebride) to_chat(thebride, span_notice("Your new shared surname is [surname]."))
+							// Set marriedto fields
+							thegroom.marriedto = thebride.real_name
+							thebride.marriedto = thegroom.real_name
+							thegroom.adjust_triumphs(1)
+							thebride.adjust_triumphs(1)
+							// After surname is set, have the priest say the wedding line
+							if(user && surname)
+								var/surname_trimmed = copytext(surname, 2) // Remove leading space if present
+								user.say("I hereby wed you [surname_trimmed]s.")
+							priority_announce("[thegroom.real_name] has married [thebride.real_name]!", title = "Holy Union!", sound = 'sound/misc/bell.ogg')
+							qdel(A)
+							marriage = TRUE
 						else
-							/*
-							* This code prevents inheriting the last name of
-							* " of wolves" or " the wolf"
-							* remove this if you want "Skibbins of wolves" to
-							* have his bride become "Sarah of wolves".
-							*/
-							if(findtext(thegroom.real_name, " of ") || findtext(thegroom.real_name, " the "))
-								surname2use = thegroom.dna.species.random_surname()
-								thegroom.change_name(copytext(thegroom.real_name, 1,index))
-							else
-								surname2use = copytext(thegroom.real_name, index)
-								thegroom.change_name(copytext(thegroom.real_name, 1,index))
-						index = findtext(thebride.real_name, " ")
-						if(index)
-							thebride.change_name(copytext(thebride.real_name, 1,index))
-						bridefirst = thebride.real_name
-						thegroom.change_name(thegroom.real_name + surname2use)
-						thebride.change_name(thebride.real_name + surname2use)
-						thegroom.marriedto = thebride.real_name
-						thebride.marriedto = thegroom.real_name
-						thegroom.adjust_triumphs(1)
-						thebride.adjust_triumphs(1)
-						//Bite the apple first if you want to be the groom.
-						priority_announce("[thegroom.real_name] has married [bridefirst]!", title = "Holy Union!", sound = 'sound/misc/bell.ogg')
-						marriage = TRUE
-						qdel(A)
-
-				if(!marriage)
-					A.burn()
-					return
-	return ..()
+							A.become_rotten()
+							to_chat(user, span_danger("Eora recoils from this union! The apple rots in your hands. The excommunicated cannot be wed by the church."))
+							if(thegroom)
+								to_chat(thegroom, span_danger("Eora recoils from this union! You are excommunicated and cannot be wed by the church."))
+							if(thebride)
+								to_chat(thebride, span_danger("Eora recoils from this union! You are excommunicated and cannot be wed by the church."))
+							// Do not qdel(A) here so the rotten apple remains
+							return
+					if(!marriage)
+						if(istype(W, /obj/item/reagent_containers/food/snacks/grown/apple))
+							W.burn()
+						return
+				return
+	..()
 
 
 /obj/structure/fluff/psycross/copper/Destroy()

@@ -26,7 +26,7 @@
 	if(istype(I, /obj/item/reagent_containers/food/snacks/rogue/honey))
 		if(isturf(loc)&& (found_table))
 			playsound(get_turf(user), 'sound/foley/dropsound/food_drop.ogg', 40, TRUE, -1)
-			to_chat(user, span_notice("Slathering the cake with delicious spider honey..."))
+			to_chat(user, span_notice("Slathering the cake with delicious honey..."))
 			if(do_after(user,long_cooktime, target = src))
 				add_sleep_experience(user, /datum/skill/craft/cooking, user.STAINT)
 				new /obj/item/reagent_containers/food/snacks/rogue/hcakeuncooked(loc)

@@ -278,7 +278,7 @@
 		var/mob/living/target = targets[1]
 		if(target == user)
 			return FALSE
-		if(ispath(user.patron?.type, /datum/patron/divine) && target.real_name in GLOB.excommunicated_players)
+		if(ispath(user.patron?.type, /datum/patron/divine) && (target.real_name in GLOB.excommunicated_players))
 			to_chat(user, span_warning("Pestra gives no answer back to clean their body from the rot."))
 			revert_cast()
 			return FALSE		

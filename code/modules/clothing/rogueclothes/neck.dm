@@ -376,6 +376,16 @@
 	icon_state = "zcross_a"
 	slot_flags = ITEM_SLOT_NECK|ITEM_SLOT_HIP|ITEM_SLOT_WRISTS|ITEM_SLOT_RING
 
+/obj/item/clothing/neck/roguetown/zcross/iron
+	name = "inverted psycross"
+	desc = "A symbol of progress from an era that had reason to believe in it."
+	icon_state = "zcross_iron"
+	resistance_flags = FIRE_PROOF
+	slot_flags = ITEM_SLOT_NECK|ITEM_SLOT_HIP|ITEM_SLOT_WRISTS|ITEM_SLOT_RING
+	anvilrepair = /datum/skill/craft/armorsmithing
+	grid_width = 32
+	grid_height = 32
+
 /obj/item/clothing/neck/roguetown/psicross/astrata
 	name = "amulet of Astrata"
 	desc = "As sure as the sun rises, tomorrow will come."

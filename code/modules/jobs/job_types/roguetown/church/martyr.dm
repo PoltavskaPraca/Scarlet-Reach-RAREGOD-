@@ -424,7 +424,7 @@
 	faction = "Station"
 	tutorial = "Martyrs are hand-picked among the most devout of the Holy See. They are given one of the See's cherished relics to protect the Church, and to inspire hope and lead by example of grace, kindness and vicious intolerance to any who do not share the belief of the Ten. They have sworn an Oath in the sight of the gods, and will fulfill it to the bitter end."
 	allowed_sexes = list(MALE, FEMALE)
-	allowed_races = RACES_NO_CONSTRUCT
+	allowed_races = RACES_SECOND_CLASS_NO_GOLEM
 	allowed_patrons = ALL_DIVINE_PATRONS
 	outfit = /datum/outfit/job/roguetown/martyr
 	min_pq = 10 //Cus it's a Martyr of the Ten. Get it.
@@ -433,9 +433,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	display_order = JDO_MARTYR
-	
 	give_bank_account = TRUE
-
 	cmode_music = 'sound/music/combat_martyrsafe.ogg'
 
 	//No undeath-adjacent virtues for a role that can sacrifice itself. The Ten like their sacrifices 'pure'. (I actually didn't want to code returning those virtue traits post-sword use)

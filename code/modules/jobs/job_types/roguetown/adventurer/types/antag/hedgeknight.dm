@@ -2,10 +2,10 @@
 	name = "Hedge Knight"
 	tutorial = "A noble fallen from grace, your tarnished armor sits upon your shoulders as a heavy reminder of the life you've lost. Take back what is rightfully yours."
 	allowed_sexes = list(MALE, FEMALE)
-	allowed_races = RACES_NO_CONSTRUCT
+	allowed_races = RACES_NO_GOLEM
 	outfit = /datum/outfit/job/roguetown/bandit/hedgeknight
 	category_tags = list(CTAG_BANDIT)
-	maximum_possible_slots = 2 //Too many plate armoured fellas is scawy ...
+	maximum_possible_slots = 1
 	cmode_music = 'sound/music/combat_bandit.ogg'
 
 /datum/outfit/job/roguetown/bandit/hedgeknight/pre_equip(mob/living/carbon/human/H)
@@ -53,3 +53,4 @@
 	ADD_TRAIT(H, TRAIT_MEDIUMARMOR, TRAIT_GENERIC)
 	ADD_TRAIT(H, TRAIT_HEAVYARMOR, TRAIT_GENERIC)
 	ADD_TRAIT(H, TRAIT_NOBLE, TRAIT_GENERIC) //hey buddy you hear about roleplaying
+	H.dna.species.soundpack_m = new /datum/voicepack/male/knight()	

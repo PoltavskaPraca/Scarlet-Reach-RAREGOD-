@@ -7,7 +7,7 @@
 //	where you would want the updater procs below to run
 
 //	This also works with decimals.
-#define SAVEFILE_VERSION_MAX	31
+#define SAVEFILE_VERSION_MAX	33
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -133,6 +133,27 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			S["facial_style_name"]	>> facial_hairstyle
 	if(current_version < 30)
 		S["voice_color"]		>> voice_color
+	if(current_version < 33) // Update races
+		var/species_name
+		S["species"] >> species_name
+		testing("Save version < 33, updating [species_name].")
+		if(species_name)
+			var/newtype = GLOB.species_list[species_name]
+			if(!newtype)
+				if(species_name == "Sissean")
+					testing("Updating to Zardman.")
+					species_name = "Zardman"
+				if(species_name == "Saurian")
+					testing("Updating to Zardman.")
+					species_name = "Zardman"
+				else if(species_name == "Constructb")
+					testing("Updating to Golemb.")
+					species_name = "Golemb"
+				else if(findtext(species_name, "Metal Construct"))
+					testing("Updating to Golem.")
+					species_name = "Golem"
+
+		_load_species(S, species_name)
 
 /datum/preferences/proc/load_path(ckey,filename="preferences.sav")
 	if(!ckey)
@@ -327,10 +348,11 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return TRUE
 
 
-/datum/preferences/proc/_load_species(S)
-	var/species_name
+/datum/preferences/proc/_load_species(S, species_name = null)
 	testing("begin _load_species()")
-	S["species"] >> species_name
+	if(!species_name)
+		S["species"] >> species_name
+
 	if(species_name)
 		var/newtype = GLOB.species_list[species_name]
 		if(newtype)

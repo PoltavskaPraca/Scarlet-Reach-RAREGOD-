@@ -67,6 +67,12 @@
 		if(HL.real_name == second_target_name)
 			second_target = HL
 
+	// Check if either target is a zad
+	if(istype(first_target, /mob/living/simple_animal/hostile/retaliate/bat/crow) || istype(second_target, /mob/living/simple_animal/hostile/retaliate/bat/crow))
+		to_chat(user, span_warning("Zads are immune to mindlinks!"))
+		revert_cast()
+		return FALSE
+
 	user.visible_message(span_notice("[user] touches their temples and concentrates..."), span_notice("I establish a mental connection between [first_target] and [second_target]..."))
 	
 	// Create the mindlink
@@ -75,6 +81,10 @@
 	
 	to_chat(first_target, span_notice("A mindlink has been established with [second_target]! Use ,y before a message to communicate telepathically."))
 	to_chat(second_target, span_notice("A mindlink has been established with [first_target]! Use ,y before a message to communicate telepathically."))
+	
+	// Register signals to break mindlink on zad transformation
+	RegisterSignal(first_target, "pre_shapeshift", PROC_REF(break_mindlink_if_zad))
+	RegisterSignal(second_target, "pre_shapeshift", PROC_REF(break_mindlink_if_zad))
 	
 	addtimer(CALLBACK(src, PROC_REF(break_link), link), 15 MINUTES)
 	return TRUE
@@ -88,5 +98,14 @@
 	
 	GLOB.mindlinks -= link
 	qdel(link)
+
+/obj/effect/proc_holder/spell/invoked/mindlink/proc/break_mindlink_if_zad(mob/living/shifter, new_type)
+	if(new_type == /mob/living/simple_animal/hostile/retaliate/bat/crow)
+		for(var/datum/mindlink/link in GLOB.mindlinks)
+			if(shifter == link.owner || shifter == link.target)
+				to_chat(link.owner, span_warning("The mindlink breaks as [shifter] transforms into a zad!"))
+				to_chat(link.target, span_warning("The mindlink breaks as [shifter] transforms into a zad!"))
+				GLOB.mindlinks -= link
+				qdel(link)
 
 

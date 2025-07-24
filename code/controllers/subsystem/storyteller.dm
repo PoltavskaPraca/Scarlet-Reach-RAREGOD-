@@ -1149,7 +1149,7 @@ SUBSYSTEM_DEF(gamemode)
 	GLOB.scarlet_round_stats[STATS_ALIVE_TIEFLINGS] = 0
 	GLOB.scarlet_round_stats[STATS_ALIVE_HALFKIN] = 0
 	GLOB.scarlet_round_stats[STATS_ALIVE_WILDKIN] = 0
-	GLOB.scarlet_round_stats[STATS_ALIVE_CONSTRUCTS] = 0
+	GLOB.scarlet_round_stats[STATS_ALIVE_GOLEMS] = 0
 	GLOB.scarlet_round_stats[STATS_ALIVE_VERMINFOLK] = 0
 	GLOB.scarlet_round_stats[STATS_ALIVE_DRACON] = 0
 	GLOB.scarlet_round_stats[STATS_ALIVE_AXIAN] = 0
@@ -1250,8 +1250,8 @@ SUBSYSTEM_DEF(gamemode)
 				GLOB.scarlet_round_stats[STATS_ALIVE_HALFKIN]++
 			if(iswildkin(human_mob))
 				GLOB.scarlet_round_stats[STATS_ALIVE_WILDKIN]++
-			if(isconstruct(human_mob))
-				GLOB.scarlet_round_stats[STATS_ALIVE_CONSTRUCTS]++
+			if(isgolemp(human_mob))
+				GLOB.scarlet_round_stats[STATS_ALIVE_GOLEMS]++
 			if(isvermin(human_mob))
 				GLOB.scarlet_round_stats[STATS_ALIVE_VERMINFOLK]++
 			if(isdracon(human_mob))

@@ -30,9 +30,11 @@
     if(selected)
         target_item_name = selected[1]
         target_item_path = selected[2]
-    is_mammon = FALSE
-    is_assassinate = FALSE
-    return TRUE
+        is_mammon = FALSE
+        is_assassinate = FALSE
+        return TRUE
+    else
+        return FALSE
 
 /datum/objective/thieves_guild_objective/proc/setup_mammon_objective()
 	is_mammon = TRUE
@@ -49,6 +51,7 @@
     strong_combat_roles = list("Knight", "Marshal", "Knight Captain", "Man at Arms", "Sergeant", "Warden", "Watchman", "Squire", "Dungeoneer", "Mercenary", "Veteran")
     var/list/candidates
     candidates = list()
+    var/list/available_roles = list()
     for(var/client/C in GLOB.clients)
         var/mob/living/carbon/human/H
         H = C.mob
@@ -58,6 +61,7 @@
             continue
         var/assigned_role = H.mind.assigned_role
         var/role_name = get_role_name(assigned_role)
+        available_roles += "[H.real_name] ([role_name])"
         var/in_valid_roles = (role_name in valid_roles)
         var/in_strong_combat_roles = (role_name in strong_combat_roles)
         var/is_alive = (H.stat != DEAD)
@@ -89,6 +93,9 @@
         if(!assigned)
             // If assassination fails (no valid targets), fall back to steal
             assigned = src.setup_steal_objective()
+        if(!assigned)
+            // If steal also fails, fall back to mammon
+            assigned = src.setup_mammon_objective()
     update_explanation_text()
 
 /datum/objective/thieves_guild_objective/proc/get_assassinate_explanation()
@@ -166,6 +173,6 @@
 
 /proc/get_role_name(var/role)
 	if(istype(role, /datum/job))
-		if("title" in role)
-			return role["title"]
+		var/datum/job/J = role
+		return J.title
 	return "[role]" 
